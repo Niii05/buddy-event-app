@@ -42,3 +42,12 @@ Table: registrations
 - buddy_id (FK -> students.id, nullable)
 - registered_at (DATETIME)
 
+
+## Architecture
+
+Here’s a simple ASCII diagram of the system:
+[S3 + CloudFront] -> [API Gateway] -> [Lambda functions] -> [RDS (MySQL)]
+                     ^ IAM Roles     ^ Security Group
+                     |
+                   Frontend calls
+
