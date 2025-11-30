@@ -1,0 +1,15 @@
+import React from "react";
+import StudentsPerEvent from "./StudentsPerEvent";
+import BuddyPairs from "./BuddyPairs";
+import TopInterests from "./TopInterests";
+
+export default function Analytics() {
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Event Analytics Dashboard</h1>
+      <StudentsPerEvent />
+      <BuddyPairs />
+      <TopInterests />
+    </div>
+  );
+}
