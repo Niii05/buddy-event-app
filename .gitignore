@@ -2,3 +2,20 @@ __pycache__/
 *.pyc
 pymysql/
 *.dist-info/
+ # Node / frontend build files
+/frontend/dist/
+/frontend/node_modules/
+
+# Python cache
+**/__pycache__/
+/backend/*/__pycache__/
+
+# Python dependencies you packaged (pymysql etc.)
+/backend/*/pymysql/
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
