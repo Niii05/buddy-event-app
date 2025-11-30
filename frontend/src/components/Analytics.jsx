@@ -1,13 +1,13 @@
 import React from "react";
-import StudentsPerEvent from "./StudentsPerEvent";
+import studentsperevent from "./studentsperevent";
 import BuddyPairs from "./BuddyPairs";
 import TopInterests from "./TopInterests";
 
-export default function Analytics() {
+export default function srcAnalytics() {
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Event Analytics Dashboard</h1>
-      <StudentsPerEvent />
+      <h1>Event srcAnalytics Dashboard</h1>
+      <studentsperevent />
       <BuddyPairs />
       <TopInterests />
     </div>
