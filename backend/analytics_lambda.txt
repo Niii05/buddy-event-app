@@ -1,0 +1,52 @@
+import pymysql
+import os
+import json
+from collections import Counter
+
+def lambda_handler(event, context):
+    try:
+        # Connect to RDS
+        conn = pymysql.connect(
+            host=os.environ['DB_HOST'],
+            user=os.environ['DB_USER'],
+            password=os.environ['DB_PASSWORD'],
+            database=os.environ['DB_NAME'],
+            connect_timeout=5
+        )
+
+        with conn.cursor(pymysql.cursors.DictCursor) as cur:
+            # a) Students per event
+            cur.execute("SELECT event_id, COUNT(student_id) as total FROM registrations GROUP BY event_id")
+            students_per_event = cur.fetchall()
+
+            # b) Buddy pairs per event
+            cur.execute("SELECT event_id, COUNT(buddy_id) as paired_students FROM registrations WHERE buddy_id IS NOT NULL GROUP BY event_id")
+            buddy_pairs_per_event = cur.fetchall()
+
+            # c) Top shared interests
+            cur.execute("SELECT interests FROM students")
+            all_interests = []
+            for row in cur.fetchall():
+                if row['interests']:
+                    all_interests.extend([i.strip() for i in row['interests'].split(',')])
+            top_interests = Counter(all_interests).most_common(5)
+
+        # Combine into one JSON response
+        return {
+            "statusCode": 200,
+            "body": json.dumps({
+                "students_per_event": students_per_event,
+                "buddy_pairs_per_event": buddy_pairs_per_event,
+                "top_interests": top_interests
+            }),
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*"
+            }
+        }
+
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": json.dumps({"error": str(e)})
+        }
